@@ -1,4 +1,4 @@
-# claude-dispatch-kit
+# cc-workflow-kit
 
 [English](README.md) | 繁體中文
 
@@ -59,12 +59,12 @@ flowchart TD
 Clone 這個 repo,讓 Claude Code 幫你裝:
 
 ```bash
-git clone https://github.com/workfunction/claude-dispatch-kit.git
+git clone https://github.com/workfunction/cc-workflow-kit.git
 ```
 
 然後在 Claude Code 裡說:
 
-> 讀 claude-dispatch-kit/INSTALL.md,照著安裝。
+> 讀 cc-workflow-kit/INSTALL.md,照著安裝。
 
 它會先問兩個問題(規則要全域生效還是只套用部分 repo;要不要裝提醒 hook),
 覆蓋任何既有檔案前會先檢查同名衝突，最後自己驗證結果。想手動安裝，照同一份

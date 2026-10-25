@@ -1,4 +1,4 @@
-# claude-dispatch-kit
+# cc-workflow-kit
 
 English | [繁體中文](README.zh-TW.md)
 
@@ -61,12 +61,12 @@ Split to remember: **plan → advisor, code → reviewer.**
 Clone the repo and let Claude Code install it:
 
 ```bash
-git clone https://github.com/workfunction/claude-dispatch-kit.git
+git clone https://github.com/workfunction/cc-workflow-kit.git
 ```
 
 Then, in Claude Code:
 
-> Read claude-dispatch-kit/INSTALL.md and install it.
+> Read cc-workflow-kit/INSTALL.md and install it.
 
 It asks two questions (rules everywhere or per repo; reminder hook yes/no),
 checks for name collisions before overwriting anything, and verifies the
