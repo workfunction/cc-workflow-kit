@@ -80,13 +80,20 @@ Split to remember: PLAN → ADVISOR; delivered CODE → REVIEWER.
    question, options, evidence PATHS, acceptance criteria, NO producer reasoning.
 3. **Taste-shaped tradeoffs** — distilled to recommendation + tradeoffs for
    the user.
+4. **Stand-in decider while the user is away (afk)** — a decision that would
+   normally wait for the user goes to the advisor instead, so work keeps
+   moving. Scope: reversible, in-scope calls only (design forks, direction
+   changes, taste calls, items 1–3). Every such decision is logged in the
+   task's queue file and listed in the return digest for the user to keep
+   or overturn. Always a FRESH `deep-reasoner`, even when the session runs
+   the advisor's model (the skip rule in invariant 2 does not apply here).
 
-Dispatch: `deep-reasoner`; items 1/3 include the orchestrator's reasoning,
+Dispatch: `deep-reasoner`; items 1/3/4 include the orchestrator's reasoning,
 item 2 withholds it. Evidence gap → the advisor names what is missing, the
 orchestrator gathers it and re-consults ONCE. One call per decision, no bulk.
-The advisor never substitutes for asking the user: deleting or overwriting
-what this session did not create, anything leaving the machine (push, mail,
-ticket), credentials — those stay user decisions.
+The advisor never substitutes for asking the user, afk or not: deleting or
+overwriting what this session did not create, anything leaving the machine
+(push, mail, ticket), credentials — those stay user decisions (afk: queued).
 
 ## Dispatch & report contract (every prompt)
 

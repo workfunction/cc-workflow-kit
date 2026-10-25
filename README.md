@@ -28,7 +28,7 @@ flowchart TD
 | Seat | Does | Never does |
 |---|---|---|
 | **Orchestrator** (main session) | Talks to you, breaks the task down, writes the dispatch prompts, routes work, merges results, decides when it's done. Small things (one file, a grep, a short script) stay inline. | Bulk reading or mechanical edits across many files; implementing the first instance of a change; approving its own high-risk conclusions. |
-| **Advisor** (`deep-reasoner`) | Reviews the plan of a large change before any code is written; gives the verdict on decisions you will act on (root cause, "safe to delete"); weighs direction changes and taste calls. | Writing or editing anything. It gets evidence paths and returns a verdict. |
+| **Advisor** (`deep-reasoner`) | Reviews the plan of a large change before any code is written; gives the verdict on decisions you will act on (root cause, "safe to delete"); weighs direction changes and taste calls. **While you're away (afk), it stands in for you** on reversible decisions so work doesn't stall; each one is logged for you to keep or overturn when you return. | Writing or editing anything. It gets evidence paths and returns a verdict. Approving anything irreversible or outward (push, mail, deletes) — afk or not, those wait for you. |
 | **Worker** (`implementer`) | Implements or refactors from a complete spec: an exact file list and an acceptance check it must run itself. | Touching files outside its list, drive-by fixes, planning, reviewing its own work. |
 | **Reviewer** (`reviewer`) | Reviews the delivered diff in a fresh context against the acceptance criteria. Every finding needs `file:line` plus a concrete failure scenario. | Fixing anything. Findings go back to the worker who wrote the code. |
 
@@ -52,7 +52,7 @@ Split to remember: **plan → advisor, code → reviewer.**
 | `dispatch/templates.md` | Prompt templates for dispatching each role (goal / acceptance / report). |
 | `dispatch/seat-gate.sh` | Optional prompt hook: a one-line reminder each turn, only in repos that use the rules. |
 | `agents/` | `deep-reasoner` (advisor, read-only), `implementer` (worker), `reviewer` (read-only reviewer). |
-| `skills/afk` | Before you leave: collects every decision it needs from you, probes resources, lists what you owe, and agrees on what it will and won't touch. While you're away it keeps going and queues anything irreversible. When you return: a short digest. |
+| `skills/afk` | Before you leave: collects every decision it needs from you, probes resources, lists what you owe, and agrees on what it will and won't touch. While you're away it keeps going: new decisions go to the advisor, anything irreversible is queued. When you return: a short digest, including every decision the advisor made for you. |
 | `skills/pre-compact` | Mid-task: writes context-only state to disk, lists running jobs, and gives you a safe `/compact` argument. |
 | `skills/wrap-up` | End of work: records outcomes and lessons, commits only this session's files, and lists what's still open. |
 

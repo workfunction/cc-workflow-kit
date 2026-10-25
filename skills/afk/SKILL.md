@@ -1,6 +1,6 @@
 ---
 name: afk
-description: Pre-departure gate + autonomous run-to-completion contract for when the user is about to leave the keyboard. Use whenever the user says they are leaving and the agent should keep working — going afk / AFK / leaving you overnight / I'll be back later / ask me now then finish it / give me my todo before I go / 我要afk / 準備afk / 放你overnight / 有問題先問我 然後做到底 — or asks what decisions or resources you still need from them before they leave. Covers the blocking-vs-batchable decision list, the pre-departure environment probe, the owner-todo list, the autonomy contract (never-touch list + stop rules), conduct while the user is away, and the return digest.
+description: Pre-departure gate + autonomous run-to-completion contract for when the user is about to leave the keyboard; while the user is away the advisor agent stands in as the decider for reversible calls. Use whenever the user says they are leaving and the agent should keep working — going afk / AFK / leaving you overnight / I'll be back later / ask me now then finish it / give me my todo before I go / 我要afk / 準備afk / 放你overnight / 有問題先問我 然後做到底 — or asks what decisions or resources you still need from them before they leave. Covers the blocking-vs-batchable decision list, the pre-departure environment probe, the owner-todo list, the autonomy contract (never-touch list + stop rules), conduct while the user is away, and the return digest.
 ---
 
 # afk — drain the decisions before they leave, then run to completion
@@ -25,7 +25,8 @@ release them until all four are done:
    one-word "push", pasting a description, asks to other people (hardware,
    a spec). Each with a time estimate. None → "you owe nothing, go".
 4. **Autonomy contract** — plan table (item + ETA) + "what I will decide
-   on my own" + "what I will not touch" + stop rules (when to stop and
+   on my own" + "what the advisor decides for you" (new forks that come up
+   while you're away) + "what I will not touch" + stop rules (when to stop and
    write a report instead of idling or flailing; e.g. a hardware fault →
    stop at once; build or review fails twice in a row → stop that item,
    start the next). Close with: "reply OK, or point at the cell to change".
@@ -51,7 +52,14 @@ install it — auto-mode permission checks usually block that.
   action.
 - Stuck → the pre-declared ladder: retry once with a narrower scope →
   escalate the model tier → stop that item, write the report, move on.
-  Questions that need the user's judgment wait "on the desk" as a written
+- **The advisor is the decider while the user is away.** A new decision
+  the gate did not cover (design fork, direction change, taste call) goes
+  to a FRESH `deep-reasoner` (dispatch core §advisor item 4): the question,
+  the options, evidence paths, your reasoning, and the user's stated
+  preferences from the gate. Act on its verdict and log it in the queue
+  file as `ADVISOR-DECIDED: <decision> — <one-line why>`. Irreversible or
+  outward actions are never the advisor's to approve; they stay queued.
+  No advisor available → the question waits "on the desk" as a written
   pending plan; the other lanes keep running.
 - Measurements taken while several workers run in parallel are inflated;
   label them as upper bounds, and take one quiet measurement before any
@@ -71,6 +79,8 @@ we"); the digest must make that line enough. Format:
   automatic").
 - State explicitly: "nothing pushed, nothing irreversible", plus the queue
   file path.
+- Every `ADVISOR-DECIDED` item, one line each, with what it would take to
+  reverse it — the user keeps or overturns each with one word.
 - Results table for any artifact; decisions for the user as one-word options.
 
 ## Lessons
